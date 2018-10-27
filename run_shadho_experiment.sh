@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 # Ensure that proper number of args passed to script
-if [ "$#" -ge 1 ] && [ "$#" -le 5 ]; then
+if [ "$#" -lt 1 ] || [ "$#" -gt 5 ]; then
     echo "Error: Script must be passed 1 or 4 args: experiment_id, [ scheduler, output_dir, iterations_of_runs, duration_of_iterations ]"
     exit 1;
 fi
