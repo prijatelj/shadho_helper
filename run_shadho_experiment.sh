@@ -1,8 +1,8 @@
 #!/usr/bin/bash
 
 # Ensure that proper number of args passed to script
-if ["$#" -ge 1] && ["$#" -le 5]; then
-    echo "Error: Script must be passed 1 or 4 args: experiment_id, [scheduler, output_dir, iterations_of_runs, duration_of_iterations]"
+if [ "$#" -ge 1 ] && [ "$#" -le 5 ]; then
+    echo "Error: Script must be passed 1 or 4 args: experiment_id, [ scheduler, output_dir, iterations_of_runs, duration_of_iterations ]"
     exit 1
 fi
 
@@ -13,28 +13,28 @@ DATE="$(date '+%Y-%m-%d %H:%M:%S')"
 ID=$1
 
 # second arg is the scheduler name to test, if not provided, then assumed none.
-if ["$#" -ge 2]; then
+if [ "$#" -ge 2 ]; then
     SCHEDULER=$2;
 else
     SCHEDULER="None";
 fi
 
 # if third arguement given, then use as output path.
-if ["$#" -ge 3]; then
+if [ "$#" -ge 3 ]; then
     OUTPUT_DIR=$3;
 else
     OUTPUT_DIR="None";
 fi
 
 # if number of iterations to repeat the experiment is given, ow. None
-if ["$#" -ge 4]; then
+if [ "$#" -ge 4 ]; then
     ITERATIONS=$4;
 else
     ITERATIONS="None";
 fi
 
 # if duration of iterations is given, ow. None
-if ["$#" -ge 5]; then
+if [ "$#" -ge 5 ]; then
     DURATION=$5;
 else
     DURATION="None";
