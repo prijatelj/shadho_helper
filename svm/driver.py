@@ -10,7 +10,7 @@ def parse_args():
 
     parser.add_argument('master_name', help='Name of the master that controls the SHADHO workers.')
     parser.add_argument('-o', '--output_results_path', default='', help='File path for the results JSON file.')
-    parser.add_arguement('-t', '--timeout', default=3600, type=float, help='Timeout duration of SHADHO run.')
+    parser.add_argument('-t', '--timeout', default=3600, type=float, help='Timeout duration of SHADHO run.')
 
     args = parser.parse_args()
 
