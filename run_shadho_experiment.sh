@@ -7,7 +7,7 @@ if [ "$#" -lt 1 ] || [ "$#" -gt 5 ]; then
 fi
 
 # Get Date and Time for naming this experiment session
-DATE="$(date '+%Y-%m-%d %H:%M:%S')"
+DATE="$(date '+%Y-%m-%d_%H:%M:%S')"
 
 #save the first arg as the experiment identifier
 ID=$1
