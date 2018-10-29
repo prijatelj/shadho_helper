@@ -51,6 +51,7 @@ fi
 
 # Construct Master Name from parts
 MASTER_NAME="$ID-$SCHEDULER-$DATE"
+echo "master_name = $MASTER_NAME"
 
 # Create the shadho worker factories to run in the background.
 #TODO allow user to specif -w and -W in this script
@@ -60,7 +61,7 @@ MASTER_NAME="$ID-$SCHEDULER-$DATE"
 ~/.local/bin/shadho_wq_factory -M $MASTER_NAME -T condor -w 10 -W 20 --cores=16 &
 
 # Run the python driver
-python3 svm/driver.py -o "$OUTPUT_DIR/$MASTER_NAME.json" "$MASTER_NAME"
+python3 driver.py -o "$OUTPUT_DIR/$MASTER_NAME.json" "$MASTER_NAME"
 
 # kill all factories and workers.
 ps aux | grep $1 | grep work_queue | awk '{print $2}' | xargs -L1 kill
