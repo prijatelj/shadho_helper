@@ -62,6 +62,7 @@ if __name__ == '__main__':
 
     # Set up the SHADHO driver like usual
     opt = Shadho('bash svm_task.sh', space, timeout=args.timeout)
+    #opt = Shadho('bash svm_task.sh', space, timeout=args.timeout, scheduler='simulated_annealing')
     opt.config.workqueue.name = args.master_name
     opt.config.workqueue.port = 0
 

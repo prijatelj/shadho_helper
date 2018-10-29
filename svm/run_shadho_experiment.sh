@@ -61,7 +61,7 @@ echo "master_name = $MASTER_NAME"
 ~/.local/bin/shadho_wq_factory -M $MASTER_NAME -T condor -w 10 -W 20 --cores=16 &
 
 # Run the python driver
-python3 driver.py -o "$OUTPUT_DIR/$MASTER_NAME.json" "$MASTER_NAME"
+python3 driver.py -o "$OUTPUT_DIR/$MASTER_NAME.json" -t "$DURATION" "$MASTER_NAME"
 
 # kill all factories and workers.
 ps aux | grep $1 | grep work_queue | awk '{print $2}' | xargs -L1 kill
