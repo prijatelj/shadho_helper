@@ -62,9 +62,9 @@ echo "master_name = $MASTER_NAME"
 
 # Run the python driver
 if [ $DURATION = "None" ]; then
-    python3 driver.py -o "$OUTPUT_DIR/$MASTER_NAME.json" "$MASTER_NAME"
+    python3 driver.py "$OUTPUT_DIR/$MASTER_NAME.json" "$MASTER_NAME"
 else
-    python3 driver.py -o "$OUTPUT_DIR/$MASTER_NAME.json" -t "$DURATION" "$MASTER_NAME"
+    python3 driver.py "$OUTPUT_DIR/$MASTER_NAME.json" -t "$DURATION" "$MASTER_NAME"
 fi
 
 # kill all factories and workers.

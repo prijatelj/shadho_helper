@@ -9,7 +9,8 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Driver for the SHADHO implementation of SVM example.')
 
     parser.add_argument('master_name', help='Name of the master that controls the SHADHO workers.')
-    parser.add_argument('-o', '--output_results_path', default='', help='File path for the results JSON file.')
+    parser.add_argument('results_file', help='Specify the filename of the results JSON file.')
+
     parser.add_argument('-t', '--timeout', default=3600, type=float, help='Timeout duration of SHADHO run.')
 
     args = parser.parse_args()
@@ -65,6 +66,7 @@ if __name__ == '__main__':
     #opt = Shadho('bash svm_task.sh', space, timeout=args.timeout, scheduler='simulated_annealing')
     opt.config.workqueue.name = args.master_name
     opt.config.workqueue.port = 0
+    opt.config.workqueue.results_file = args.results_file
 
     # Add the task files to the optimizer
     opt.add_input_file('svm_task.sh')
