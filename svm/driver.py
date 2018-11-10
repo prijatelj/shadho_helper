@@ -12,11 +12,17 @@ def parse_args():
     parser.add_argument('result_file', help='Specify the filename of the result JSON file.')
 
     parser.add_argument('-t', '--timeout', default=3600, type=float, help='Timeout duration of SHADHO run.')
+    parser.add_argument('-s', '--scheduler', default=None, help='The scheduler to be used for allocating models to SHADHO computation classes.')
 
     args = parser.parse_args()
 
+    # enforce conditions of arguements
     if args.timeout <= 0:
         parser.error('timeout must be greater than 0 seconds.')
+    if args.result_file == '' or args.result_file.lower() == 'none':
+        args.result_file = './'
+    if args.master_name == '':
+        parser.error('must provide a distinct master name')
     # TODO check if provided paths are valid
     #if args.output_results_path invalid, then parser error.
 
