@@ -43,7 +43,7 @@ fi
 # just run them side by side with unique masters names.
 
 # Construct Master Name from parts
-MASTER_NAME="$ID-$SCHEDULER-$DATE"
+MASTER_NAME="$ID-duration-$DURATION-scheduler-$SCHEDULER-$DATE"
 echo "master_name = $MASTER_NAME"
 
 # Create the shadho worker factories to run in the background.
