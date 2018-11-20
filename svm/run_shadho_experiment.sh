@@ -6,6 +6,9 @@ if [ "$#" -lt 1 ] || [ "$#" -gt 4 ]; then
     exit 1;
 fi
 
+# TODO may want to make a conditional check, but for now it should work
+module add python/3.6.4
+
 # Get Date and Time for naming this experiment session
 DATE="$(date '+%Y-%m-%d_%H:%M:%S')"
 
