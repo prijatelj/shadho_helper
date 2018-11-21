@@ -14,8 +14,8 @@
 # NOTE, SHADHO paper for optimizing the svm on mnist ran each optimization task for 1 hour (per scheduling method compared). They also ran 48 trials. This means that 48 trials * 1hr * Number of scheduling methods tested. So 48hrs per scheduling method tested.
 
 # Ensure that proper number of args passed to script
-if [ "$#" -lt 1 ] || [ "$#" -gt 5 ]; then
-    echo "Error: Script must be passed 1 or 5 args: number_of_iterations experiment_id, [output_dir, duration_of_iteration, scheduler]"
+if [ "$#" -lt 2 ] || [ "$#" -gt 9 ]; then
+    echo "Error: Script must be passed 2 or 9 args: iterations experiment_id, [output_dir, timeout, model_sort, pyrameter_model_sort, init_model_sort, update_frequency, checkpoint_frequency]"
     exit 1;
 fi
 

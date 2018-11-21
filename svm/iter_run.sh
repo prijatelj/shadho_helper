@@ -2,8 +2,8 @@
 # Runs the same experiment in a series for the specified number of iterations.
 
 # Ensure that proper number of args passed to script
-if [ "$#" -lt 1 ] || [ "$#" -gt 5 ]; then
-    echo "Error: Script must be passed 1 or 5 args: number_of_iterations experiment_id, [output_dir, duration_of_iteration, scheduler]"
+if [ "$#" -lt 2 ] || [ "$#" -gt 9 ]; then
+    echo "Error: Script must be passed 2 or 9 args: iterations experiment_id, [output_dir, timeout, model_sort, pyrameter_model_sort, init_model_sort, update_frequency, checkpoint_frequency]"
     exit 1;
 fi
 

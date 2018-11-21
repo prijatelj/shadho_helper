@@ -5,14 +5,20 @@ from shadho import Shadho, spaces
 import argparse
 
 def parse_args():
-    # give MASTER_NAME, [OUTPUT_JSON_PATH, DURATION/timeout]
+    """Defines the arguements of this script."""
     parser = argparse.ArgumentParser(description='Driver for the SHADHO implementation of SVM example.')
 
     parser.add_argument('master_name', help='Name of the master that controls the SHADHO workers.')
     parser.add_argument('result_file', help='Specify the filename of the result JSON file.')
 
     parser.add_argument('-t', '--timeout', default=3600, type=float, help='Timeout duration of SHADHO run.')
-    parser.add_argument('-s', '--scheduler', default=None, help='The scheduler to be used for allocating models to SHADHO computation classes.')
+    parser.add_argument('-u', '--update_frequency', default=10, type=int, help='The frequency at which SHADHO will update the assignment of models to compute classes.')
+    parser.add_argument('-c', '--checkpoint_frequency', default=50, type=int, help='The frequency at which SHADHO will save progress to the backend while running.')
+
+    parser.add_argument('-m', '--model_sort', default=None, help='The sorting method to be used for allocating models to SHADHO computation classes.')
+    parser.add_argument('-i', '--init_model_sort', default=None, help='The sorting method to be used for allocating models to SHADHO computation classes at the beginning of running SHADHO.')
+    parser.add_argument('-p', '--pyrameter_model_sort', default=None, help='The sorting method to be used for ordering models in modelgroups and determing their priority in running relative other models in the same modelgroup.')
+
 
     args = parser.parse_args()
 
@@ -69,10 +75,20 @@ if __name__ == '__main__':
 
     # Set up the SHADHO driver like usual
     opt = Shadho('bash svm_task.sh', space, timeout=args.timeout, backend=args.result_file)
-    #opt = Shadho('bash svm_task.sh', space, timeout=args.timeout, scheduler='simulated_annealing')
+    # TODO implement the frequency and model sort arguements throughout pyrameter and shadho
+    """
+    opt = Shadho('bash svm_task.sh', space,
+        timeout=args.timeout,
+        backend=args.result_file,
+        update_frequency=args.update_frequency,
+        checkpoint_frequency=args.checkpoint_frequency,
+        model_sort=args.model_sort,
+        pyrameter_model_sort=args.pyrameter_model_sort,
+        init_model_sort=args.init_model_sort
+    )
+    """
     opt.config.workqueue.name = args.master_name
     opt.config.workqueue.port = 0
-    #opt.config.workqueue.result_file = args.result_file
 
     # Add the task files to the optimizer
     opt.add_input_file('svm_task.sh')

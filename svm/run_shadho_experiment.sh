@@ -1,11 +1,12 @@
 #!/usr/bin/bash
 
 # Ensure that proper number of args passed to script
-if [ "$#" -lt 1 ] || [ "$#" -gt 4 ]; then
-    echo "Error: Script must be passed 1 or 4 args: experiment_id, [output_dir, duration_of_iteration, scheduler]"
+if [ "$#" -lt 1 ] || [ "$#" -gt 8 ]; then
+    echo "Error: Script must be passed 1 through 8 args: experiment_id, [output_dir, timeout, model_sort, pyrameter_model_sort, init_model_sort, update_frequency, checkpoint_frequency]"
     exit 1;
 fi
 
+# Load python on CRC if not already loaded.
 # TODO may want to make a conditional check, but for now it should work
 module add python/3.6.4
 
@@ -15,35 +16,69 @@ DATE="$(date '+%Y-%m-%d_%H:%M:%S')"
 #save the first arg as the experiment identifier
 ID=$1
 
+# create empty args string to be added to as necessary
+DRIVER_ARGS=""
+
 # if third arguement given, then use as output path.
 if [ "$#" -ge 2 ]; then
     OUTPUT_DIR=$2;
     # Create the results directory first
     mkdir -p "$OUTPUT_DIR";
 else
-    OUTPUT_DIR=".";
+    OUTPUT_DIR="."; # a '.' for current dir because always appeneded with '/'.
 fi
 
 ## Optional arguements in driver.py
 # if duration of iterations is given, ow. None
-if [ "$#" -ge 3 ]; then
-    DURATION=$3;
+if [ "$#" -ge 3 ] && [ "$3" != "None" ]; then
+    TIMEOUT=$3;
+    DRIVER_ARGS="$DRIVER_ARGS -t $TIMEOUT"
 else
-    DURATION="None";
+    TIMEOUT="None";
 fi
 
 # the id of scheduler to test, if not provided, then assumed none.
-if [ "$#" -ge 4 ]; then
-    SCHEDULER=$4;
+if [ "$#" -ge 4 ] && [ "$4" != "None" ]; then
+    MODEL_SORT=$4;
+    DRIVER_ARGS="$DRIVER_ARGS -s $MODEL_SORT"
 else
-    SCHEDULER="None";
+    MODEL_SORT="None";
 fi
 
-# NOTE that this would be sequential, while this could be done in parallel!
-# just run them side by side with unique masters names.
+# the id of pyrameter modelgroup scheduler to test, if not provided, then assumed none.
+if [ "$#" -ge 5 ] && [ "$5" != "None" ]; then
+    PYRAMETER_MODEL_SORT=$5;
+    DRIVER_ARGS="$DRIVER_ARGS -p $PYRAMETER_MODEL_SORT"
+else
+    PYRAMETER_MODEL_SORT="None";
+fi
+
+# the id of initial scheduler for first strarting SHADHO, if not provided, then assume its the same as MODEL_SORT.
+if [ "$#" -ge 6 ] && [ $6 != $MODEL_SORT ]; then
+    INIT=$6;
+    DRIVER_ARGS="$DRIVER_ARGS -i $INIT"
+else
+    INIT=$MODEL_SORT;
+fi
+
+# provide update frequency
+if [ "$#" -ge 7 ] && [ "$7" -ne 10 ]; then
+    UPDATE_FREQUENCY=$7;
+    DRIVER_ARGS="$DRIVER_ARGS -u $UPDATE_FREQUENCY"
+else
+    UPDATE_FREQUENCY=10;
+fi
+
+# provide checkpoint frequncy for saving backend as shadho runs.
+if [ "$#" -ge 8 ] && [ "$8" -ne 50 ]; then
+    CHECKPOINT_FREQUENCY=$8;
+    DRIVER_ARGS="$DRIVER_ARGS -c $CHECKPOINT_FREQUENCY"
+else
+    CHECKPOINT_FREQUENCY=50;
+fi
 
 # Construct Master Name from parts
-MASTER_NAME="$ID-duration-$DURATION-scheduler-$SCHEDULER-$DATE"
+MASTER_NAME="$ID-t-$TIMEOUT-s-$MODEL_SORT-p-$PYRAMETER_MODEL_SORT-i-$INIT-u-$UPDATE_FREQUENCY-$DATE"
 echo "master_name = $MASTER_NAME"
 
 # Create the shadho worker factories to run in the background.
@@ -53,15 +88,8 @@ echo "master_name = $MASTER_NAME"
 ~/.local/bin/shadho_wq_factory -M $MASTER_NAME -T condor -w 10 -W 20 --cores=8 &
 ~/.local/bin/shadho_wq_factory -M $MASTER_NAME -T condor -w 10 -W 20 --cores=16 &
 
-# Create the arguements to run the driver
-DRIVER_ARGS="$MASTER_NAME $OUTPUT_DIR/$MASTER_NAME.json"
-
-if [ $DURATION != "None" ]; then
-    DRIVER_ARGS="$DRIVER_ARGS -t $DURATION"
-fi
-if [ $SCHEDULER != "None" ]; then
-    DRIVER_ARGS="$DRIVER_ARGS -s $SCHEDULER"
-fi
+# append the optional arguements
+DRIVER_ARGS="$MASTER_NAME $OUTPUT_DIR/$MASTER_NAME.json $DRIVER_ARGS"
 
 # Run the python driver
 python3 driver.py $DRIVER_ARGS 
@@ -70,5 +98,5 @@ python3 driver.py $DRIVER_ARGS
 ps aux | grep $1 | grep work_queue | awk '{print $2}' | xargs -L1 kill
 ps aux | grep $1 | grep shadho_wq | awk '{print $2}' | xargs -L1 kill
 
-# remove all condor jobs
+# remove all condor jobs, these 2 are probably highly redundant.
 condor_q $1 | awk '{print $1}' | grep '\.' | xargs -L1 condor_rm
