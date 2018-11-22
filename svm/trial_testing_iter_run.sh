@@ -28,6 +28,7 @@ for ((i = 1; i <= $1; i++)); do
     # other scheduling methods ...
 
     # run derek dynamic scheduler 1
+    # TODO the below will not work, it depends on a single set of args, and those are meant for one specific shadho run with specified scheduler, so need to hardcode the args in this test script.
     cd ../../pyrameter
     git checkout master
     python3 setup.py install --user
