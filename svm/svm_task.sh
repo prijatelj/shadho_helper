@@ -6,4 +6,7 @@
 # For this task, activate an environment that has scikit-learn installed.
 
 module add python/3.6.4
+mkdir .joblib
+export JOBLIB_TEMP_FOLDER=".joblib"
 python3 svm.py
+rm -rf .joblib

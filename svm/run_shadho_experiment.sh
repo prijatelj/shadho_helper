@@ -83,10 +83,10 @@ echo "master_name = $MASTER_NAME"
 
 # Create the shadho worker factories to run in the background.
 #TODO allow user to specify -w and -W in this script
-~/.local/bin/shadho_wq_factory -M $MASTER_NAME -T condor -w 10 -W 20 --cores=2 &
-~/.local/bin/shadho_wq_factory -M $MASTER_NAME -T condor -w 10 -W 20 --cores=4 &
-~/.local/bin/shadho_wq_factory -M $MASTER_NAME -T condor -w 10 -W 20 --cores=8 &
-~/.local/bin/shadho_wq_factory -M $MASTER_NAME -T condor -w 10 -W 20 --cores=16 &
+~/.local/bin/shadho_wq_factory -M $MASTER_NAME -T condor -w 10 -W 20 --cores=2 --tasks-per-worker=1 &
+~/.local/bin/shadho_wq_factory -M $MASTER_NAME -T condor -w 10 -W 20 --cores=4 --tasks-per-worker=1 &
+~/.local/bin/shadho_wq_factory -M $MASTER_NAME -T condor -w 10 -W 20 --cores=8 --tasks-per-worker=1 &
+~/.local/bin/shadho_wq_factory -M $MASTER_NAME -T condor -w 10 -W 20 --cores=16 --tasks-per-worker=1 &
 
 # append the optional arguements
 DRIVER_ARGS="$MASTER_NAME $OUTPUT_DIR/$MASTER_NAME.json $DRIVER_ARGS"
