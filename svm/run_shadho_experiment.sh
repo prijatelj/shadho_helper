@@ -97,6 +97,3 @@ python3 driver.py $DRIVER_ARGS
 # kill all factories and workers.
 ps aux | grep $1 | grep work_queue | awk '{print $2}' | xargs -L1 kill
 ps aux | grep $1 | grep shadho_wq | awk '{print $2}' | xargs -L1 kill
-
-# remove all condor jobs, these 2 are probably highly redundant.
-condor_q $1 | awk '{print $1}' | grep '\.' | xargs -L1 condor_rm
