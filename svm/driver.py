@@ -104,6 +104,6 @@ if __name__ == '__main__':
     opt.add_compute_class('16-core', 'cores', 16, max_tasks=20)
     opt.add_compute_class('8-core', 'cores', 8, max_tasks=20)
     opt.add_compute_class('4-core', 'cores', 4, max_tasks=20)
-    opt.add_compute_class('2-core', 'cores', 2, max_tasks=20)
+    #opt.add_compute_class('2-core', 'cores', 2, max_tasks=20)
 
     opt.run()
