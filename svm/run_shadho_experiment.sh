@@ -40,7 +40,7 @@ fi
 # the id of scheduler to test, if not provided, then assumed none.
 if [ "$#" -ge 4 ] && [ "$4" != "None" ]; then
     MODEL_SORT=$4;
-    DRIVER_ARGS="$DRIVER_ARGS -s $MODEL_SORT"
+    DRIVER_ARGS="$DRIVER_ARGS -m $MODEL_SORT"
 else
     MODEL_SORT="None";
 fi
@@ -78,7 +78,7 @@ else
 fi
 
 # Construct Master Name from parts
-MASTER_NAME="$ID-t-$TIMEOUT-s-$MODEL_SORT-p-$PYRAMETER_MODEL_SORT-i-$INIT-u-$UPDATE_FREQUENCY-$DATE"
+MASTER_NAME="$ID-t-$TIMEOUT-m-$MODEL_SORT-p-$PYRAMETER_MODEL_SORT-i-$INIT-u-$UPDATE_FREQUENCY-$DATE"
 echo "master_name = $MASTER_NAME"
 
 # Create the shadho worker factories to run in the background.
