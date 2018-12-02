@@ -74,7 +74,7 @@ if __name__ == '__main__':
     }
 
     # Set up the SHADHO driver like usual
-    if args.pyrameter_model_sort is 'uniform_random':
+    if args.pyrameter_model_sort in ['uniform_random', 'perceptron']:
         use_complexity=False
         use_priority=False
     else:
