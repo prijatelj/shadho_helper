@@ -88,7 +88,7 @@ if __name__ == '__main__':
         backend=args.result_file,
         update_frequency=args.update_frequency,
         checkpoint_frequency=args.checkpoint_frequency,
-        model_sort=agrs.model_sort,
+        model_sort=args.model_sort,
         init_model_sort=args.init_model_sort,
         pyrameter_model_sort=args.pyrameter_model_sort,
     )
