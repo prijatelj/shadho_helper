@@ -75,21 +75,25 @@ if __name__ == '__main__':
 
     # Set up the SHADHO driver like usual
     if args.pyrameter_model_sort is 'uniform_random':
-        opt = Shadho('bash svm_task.sh', space, timeout=args.timeout, backend=args.result_file, use_complexity=False, use_priority=False)
+        use_complexity=False
+        use_priority=False
     else:
-        opt = Shadho('bash svm_task.sh', space, timeout=args.timeout, backend=args.result_file)
-    # TODO implement the frequency and model sort arguements throughout pyrameter and shadho
-    """
+        use_complexity=True
+        use_priority=True
+
     opt = Shadho('bash svm_task.sh', space,
+        use_complexity=use_complexity,
+        use_priority=use_priority,
         timeout=args.timeout,
         backend=args.result_file,
         update_frequency=args.update_frequency,
         checkpoint_frequency=args.checkpoint_frequency,
-        model_sort=args.model_sort,
+        model_sort=agrs.model_sort,
+        init_model_sort=args.init_model_sort,
         pyrameter_model_sort=args.pyrameter_model_sort,
-        init_model_sort=args.init_model_sort
     )
-    """
+    #opt = Shadho('bash svm_task.sh', space, timeout=args.timeout, backend=args.result_file)
+    # TODO implement the frequency and model sort arguements throughout pyrameter and shadho
     opt.config.workqueue.name = args.master_name
     opt.config.workqueue.port = 0
 
